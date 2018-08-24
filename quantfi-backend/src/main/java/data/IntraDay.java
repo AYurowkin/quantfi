@@ -1,4 +1,4 @@
 package data;
 
-public class IntraDay {
+public class IntraDay{
 }
