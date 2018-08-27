@@ -1,4 +1,6 @@
 package data;
 
-public class JsonParser {
+public abstract class JsonParser {
+
+
 }
