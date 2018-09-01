@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 public class MonthlyAdjusted extends StockDataResponse {
 
     private MonthlyAdjusted(final Map<String, String> metaData, final List<StockInfo> stockInfoList) {
