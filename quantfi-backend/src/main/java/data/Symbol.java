@@ -1,4 +1,4 @@
-package features;
+package data;
 
 import connection.ApiParameter;
 
