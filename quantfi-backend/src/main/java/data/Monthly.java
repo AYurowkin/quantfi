@@ -13,7 +13,7 @@ public class Monthly extends StockDataResponse {
         super(metaData, stockInfoList);
     }
 
-    private static Monthly from(String json) {
+    public static Monthly from(String json) {
         Parser parser = new Parser();
         return parser.parseJson(json);
     }
