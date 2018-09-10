@@ -1,6 +1,7 @@
-package data;
+package features;
 
 import connection.ApiConnector;
+import data.*;
 
 // main class with time series functions to pull in historical data of a given stock.
 

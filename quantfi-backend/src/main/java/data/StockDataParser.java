@@ -22,6 +22,11 @@ public abstract class StockDataParser<Data> extends JsonParser<Data> {
         try {
             Map<String, String> metaData = GSON.fromJson(jsonObject.get("Meta Data"), metaDataType);
             Map<String, Map<String, String>> stockData = GSON.fromJson(jsonObject.get(getStockDataKey()), stockDataType);
+            /*
+            TODO: Figure out why stockData is not mapping the data from the JSON object. Right now it's returning null.
+            metaData seems to be working fine because it's mapping the data from the JSON object.
+            Once this issue is resolved, we should be able to store the data and add more features.
+             */
             return resolve(metaData, stockData);
         } catch (JsonSyntaxException e) {
             throw new AlphaVantageException("API data change", e);
