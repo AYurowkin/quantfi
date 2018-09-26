@@ -22,6 +22,9 @@ public abstract class StockDataParser<Data> extends JsonParser<Data> {
         try {
             Map<String, String> metaData = GSON.fromJson(jsonObject.get("Meta Data"), metaDataType);
             Map<String, Map<String, String>> stockData = GSON.fromJson(jsonObject.get(getStockDataKey()), stockDataType);
+            /*
+            TODO: Change all getStockDataKey() values to match JSON response for formatting
+             */
             return resolve(metaData, stockData);
         } catch (JsonSyntaxException e) {
             throw new AlphaVantageException("API data change", e);

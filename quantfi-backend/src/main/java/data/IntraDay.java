@@ -27,7 +27,7 @@ public class IntraDay extends StockDataResponse {
 
         @Override
         String getStockDataKey() {
-            return "Stock Data (" + interval.getValue() + ")";
+            return "Time Series (" + interval.getValue() + ")";
         }
 
         @Override
