@@ -22,7 +22,7 @@ public class Weekly extends StockDataResponse {
 
         @Override
         String getStockDataKey() {
-            return "Stock Data (Weekly)";
+            return "Weekly Time Series";
         }
 
         @Override

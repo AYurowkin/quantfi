@@ -21,7 +21,7 @@ public class Daily extends StockDataResponse {
     private static class Parser extends StockDataParser<Daily> {
         @Override
         String getStockDataKey() {
-            return "Stock Data (Daily)";
+            return "Time Series (Daily)";
         }
 
         @Override

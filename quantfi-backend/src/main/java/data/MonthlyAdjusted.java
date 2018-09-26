@@ -21,7 +21,7 @@ public class MonthlyAdjusted extends StockDataResponse {
 
         @Override
         String getStockDataKey() {
-            return "Stock Data (MonthlyAdjusted)";
+            return "Monthly Adjusted Time Series";
         }
 
         @Override
