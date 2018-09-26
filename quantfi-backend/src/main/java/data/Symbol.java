@@ -9,7 +9,6 @@ public class Symbol implements ApiParameter {
         this.symbol = symbol;
     }
 
-
     @Override
     public String getKey() {
         return "symbol";
