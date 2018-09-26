@@ -22,7 +22,7 @@ public class Monthly extends StockDataResponse {
 
         @Override
         String getStockDataKey() {
-            return "Stock Data (Monthly)";
+            return "Monthly Time Series";
         }
 
         @Override

@@ -21,7 +21,7 @@ public class WeeklyAdjusted extends StockDataResponse {
 
         @Override
         String getStockDataKey() {
-            return "Stock Data (WeeklyAdjusted)";
+            return "Weekly Adjusted Time Series";
         }
 
         @Override

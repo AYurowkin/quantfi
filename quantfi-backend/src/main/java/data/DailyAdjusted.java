@@ -22,7 +22,7 @@ public class DailyAdjusted extends StockDataResponse {
 
         @Override
         String getStockDataKey() {
-            return "Stock Data (DailyAdjusted)";
+            return "Time Series (Daily)";
         }
 
         @Override
