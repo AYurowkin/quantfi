@@ -5,6 +5,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import connection.AlphaVantageException;
 
+import java.io.FileWriter;
 import java.lang.reflect.Type;
 import java.util.Map;
 
@@ -22,12 +23,20 @@ public abstract class StockDataParser<Data> extends JsonParser<Data> {
         try {
             Map<String, String> metaData = GSON.fromJson(jsonObject.get("Meta Data"), metaDataType);
             Map<String, Map<String, String>> stockData = GSON.fromJson(jsonObject.get(getStockDataKey()), stockDataType);
-            /*
-            TODO: Change all getStockDataKey() values to match JSON response for formatting
-             */
+            storeData(jsonObject);
             return resolve(metaData, stockData);
         } catch (JsonSyntaxException e) {
             throw new AlphaVantageException("API data change", e);
+        }
+    }
+
+    private void storeData(JsonObject jsonObject) {
+        try {
+            FileWriter fw = new FileWriter("quantfi-backend/data-storage/data.txt");
+            fw.write(jsonObject.toString());
+            fw.close();
+        } catch (Exception e) {
+            throw new AlphaVantageException("Failure to write JSON object to text file.");
         }
     }
 }
