@@ -24,5 +24,5 @@ df
 df=df.astype(float)
 #df.plot(use_index = True)
 ax = df[['1. open', '2. high', '3. low', '4. close']].plot()
-ax.set(ylabel = '$', xlabel = 'Time', xtick=True, xticklabel = df.index)
+ax.set(ylabel = '$', xlabel = 'Time')
 ax.plot(use_index = True)
