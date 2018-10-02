@@ -9,9 +9,10 @@ from pandas.io.json import json_normalize
 
 #%%
 # navigates to correct directory
-if 'quantfi-algos' not in os.getcwd():
-    os.chdir('quantfi-algos')
+if 'data-storage' not in os.getcwd():
+    os.chdir('quantfi-backend\data-storage')
 
+#%%
 with open('data.txt', 'r') as json_in:
     jsi = json.load(json_in)
 
@@ -21,5 +22,6 @@ df
 
 #%%
 df=df.astype(float)
-df.plot(use_index = True)
-#df.plot(y = df['1.open'], use_index = True)
+#df.plot(use_index = True)
+ax = df[['1. open', '2. high', '3. low', '4. close']]
+ax.plot(use_index = True)
