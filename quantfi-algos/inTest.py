@@ -14,5 +14,12 @@ if 'quantfi-algos' not in os.getcwd():
 
 with open('data.txt', 'r') as json_in:
     jsi = json.load(json_in)
-df = pd.DataFrame.from_dict(jsi, orient='columns')
+
+df = pd.DataFrame(jsi['Time Series (1min)'])
+df = df.T
 df
+
+#%%
+df=df.astype(float)
+df.plot(use_index = True)
+#df.plot(y = df['1.open'], use_index = True)
