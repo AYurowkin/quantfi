@@ -1,2 +1,4 @@
 api.key
 quanti_vsc_work.code-workspace
+.gradle/*
+.idea/*
