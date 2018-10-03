@@ -5,3 +5,4 @@ quanti_vsc_work.code-workspace
 .vscode/
 quantfi.iml
 quantfi-backend/out/
+quantfi-backend/build/
