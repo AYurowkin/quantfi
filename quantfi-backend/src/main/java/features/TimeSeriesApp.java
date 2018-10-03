@@ -15,7 +15,7 @@ public class TimeSeriesApp {
         //all data requests are called by AVRequests
         AVRequest request = new AVRequest();
 
-        //sample request to pull MSFT
+        //sample request to pull test stock
         //request.testRequest(stockData);
 
         //pull tech sector

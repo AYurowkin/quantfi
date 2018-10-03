@@ -19,7 +19,7 @@ class AVRequest {
 
     void testRequest(StockData stockData) {
         try {
-            IntraDay response = stockData.intraDay("MSFT", Interval.ONE_MIN, OutputSize.COMPACT);
+            IntraDay response = stockData.intraDay("WUBA", Interval.ONE_MIN, OutputSize.COMPACT);
             Map<String, String> metaData = response.getMetaData();
             System.out.println("Information: " + metaData.get("1. Information"));
             System.out.println("Stock: " + metaData.get("2. Symbol"));
@@ -40,7 +40,7 @@ class AVRequest {
 
     void techSectorRequest(StockData stockData) {
         try {
-            String filepath = "quantfi-backend/data-storage/companylist.csv";
+            String filepath = "quantfi-backend/data-storage/preprocessed/companylist.csv";
             Reader reader = Files.newBufferedReader(Paths.get(filepath));
             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT
             .withHeader("Symbol", "Name", "MarketCap", "ADR TSO", "IPOyear", "Sector", "Industry", "Summary Quote")
@@ -53,10 +53,11 @@ class AVRequest {
                 techSectorList.add(csvRecord.get("Symbol"));
             }
             techSectorList.remove(0);   //removes column name Symbol
-            for (String s : techSectorList) {
-                System.out.println(s);
+            for (String stock : techSectorList) {
+                //requests latest 100 data points of daily information of each tech sector stock
+                stockData.daily(stock);
+                //TODO: figure out the NPE error after 4th stock (stuck on WUBA)
             }
-
         } catch (Exception e) {
             throw new AlphaVantageException("failed to retrieve tech sector stocks", e);
         }
