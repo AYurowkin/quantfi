@@ -4,3 +4,5 @@ quanti_vsc_work.code-workspace
 .idea/
 .vscode/
 quantfi-algos/__pycache__/
+quantfi.iml
+quantfi-backend/out/
