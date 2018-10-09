@@ -3,3 +3,4 @@ quanti_vsc_work.code-workspace
 .gradle/
 .idea/
 .vscode/
+quantfi-algos/__pycache__/
