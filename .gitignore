@@ -6,3 +6,4 @@ quanti_vsc_work.code-workspace
 quantfi-algos/__pycache__/
 quantfi.iml
 quantfi-backend/out/
+quantfi-backend/build/
