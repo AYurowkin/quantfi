@@ -48,7 +48,7 @@ class AVRequest {
             .withTrim());
 
             //parse csv and get list of stocks in tech sector
-            ArrayList<String> techSectorList = new ArrayList<String>();
+            ArrayList<String> techSectorList = new ArrayList<>();
             for (CSVRecord csvRecord : csvParser) {
                 techSectorList.add(csvRecord.get("Symbol"));
             }
@@ -56,7 +56,7 @@ class AVRequest {
             for (String stock : techSectorList) {
                 //requests latest 100 data points of daily information of each tech sector stock
                 stockData.daily(stock);
-                //TODO: figure out the NPE error after 4th stock (stuck on WUBA)
+                //TODO: figure out the NPE error after 5th stock (after WUBA)
             }
         } catch (Exception e) {
             throw new AlphaVantageException("failed to retrieve tech sector stocks", e);
