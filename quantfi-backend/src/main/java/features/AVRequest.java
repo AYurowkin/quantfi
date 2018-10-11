@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 // class to create requests to Alpha Vantage API
 class AVRequest {
@@ -53,10 +54,16 @@ class AVRequest {
                 techSectorList.add(csvRecord.get("Symbol"));
             }
             techSectorList.remove(0);   //removes column name Symbol
+            int count = 0;
             for (String stock : techSectorList) {
                 //requests latest 100 data points of daily information of each tech sector stock
                 stockData.daily(stock);
-                //TODO: figure out the NPE error after 5th stock (after WUBA)
+                count++;
+                if (count == 4) {
+                    count = 0;
+                    TimeUnit.MINUTES.sleep(1);
+                }
+                //TODO: figure out how to pay for the Alpha Vantage premium version
             }
         } catch (Exception e) {
             throw new AlphaVantageException("failed to retrieve tech sector stocks", e);

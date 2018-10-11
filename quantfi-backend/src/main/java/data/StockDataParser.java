@@ -23,7 +23,6 @@ public abstract class StockDataParser<Data> extends JsonParser<Data> {
             Map<String, String> metaData = GSON.fromJson(jsonObject.get("Meta Data"), metaDataType);
             Map<String, Map<String, String>> stockData = GSON.fromJson(jsonObject.get(getStockDataKey()), stockDataType);
             storeData(jsonObject, metaData.get("2. Symbol"), metaData.get("1. Information"));
-            //TODO: figure out the NPE error after 4th stock (stuck on WUBA)
             return resolve(metaData, stockData);
         } catch (JsonSyntaxException e) {
             throw new AlphaVantageException("API data change", e);
