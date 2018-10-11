@@ -1,9 +1,9 @@
-package features;
+package data;
 
 import connection.ApiConnector;
 import data.*;
 
-// main class with time series functions to pull in historical data of a given stock.
+// class with time series functions to pull in historical data of a given stock.
 
 public class StockData {
     private final ApiConnector connector;
@@ -29,7 +29,7 @@ public class StockData {
 
     public Daily daily(String symbol) {
         String json = connector.getRequest(new Symbol(symbol), Function.TIME_SERIES_DAILY);
-            return Daily.from(json);
+        return Daily.from(json);
     }
 
     public DailyAdjusted dailyAdjusted(String symbol, OutputSize outputSize) {

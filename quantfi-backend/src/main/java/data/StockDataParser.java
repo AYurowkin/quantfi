@@ -19,20 +19,22 @@ public abstract class StockDataParser<Data> extends JsonParser<Data> {
     public Data resolve(JsonObject jsonObject) {
         Type metaDataType = new TypeToken<Map<String, String>>(){}.getType();
         Type stockDataType = new TypeToken<Map<String, Map<String, String>>>(){}.getType();
-
         try {
             Map<String, String> metaData = GSON.fromJson(jsonObject.get("Meta Data"), metaDataType);
             Map<String, Map<String, String>> stockData = GSON.fromJson(jsonObject.get(getStockDataKey()), stockDataType);
-            storeData(jsonObject);
+            storeData(jsonObject, metaData.get("2. Symbol"), metaData.get("1. Information"));
+            //TODO: figure out the NPE error after 4th stock (stuck on WUBA)
             return resolve(metaData, stockData);
         } catch (JsonSyntaxException e) {
             throw new AlphaVantageException("API data change", e);
         }
     }
 
-    private void storeData(JsonObject jsonObject) {
+    private void storeData(JsonObject jsonObject, String stock, String timeSeries) {
         try {
-            FileWriter fw = new FileWriter("quantfi-backend/data-storage/data.txt");
+            timeSeries = timeSeries.split(" ", 2)[0];
+            //creates a new text file labeled with the stock name and timeseries request
+            FileWriter fw = new FileWriter("quantfi-backend/data-storage/" + stock + "_" + timeSeries + ".txt");
             fw.write(jsonObject.toString());
             fw.close();
         } catch (Exception e) {

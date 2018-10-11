@@ -7,3 +7,4 @@ quantfi-algos/__pycache__/
 quantfi.iml
 quantfi-backend/out/
 .code-workspace
+quantfi-backend/build/

@@ -1,36 +1,24 @@
 package features;
 
 import connection.AlphaVantageConnector;
-import connection.AlphaVantageException;
 import data.*;
 
-import java.util.List;
-import java.util.Map;
-
+//main class to send all requests to Alpha Vantage API
 public class TimeSeriesApp {
     public static void main(String[] args) {
+        //set key, timeout, connection to Alpha Vantage API, and StockData instance
         String apiKey = "G89M0HECMYPKA46T";
         int timeout = 3000;
         AlphaVantageConnector connector = new AlphaVantageConnector(apiKey, timeout);
-        StockData timeSeries = new StockData(connector);
+        StockData stockData = new StockData(connector);
 
-        try {
-            IntraDay response = timeSeries.intraDay("MSFT", Interval.ONE_MIN, OutputSize.COMPACT);
-            Map<String, String> metaData = response.getMetaData();
-            System.out.println("Information: " + metaData.get("1. Information"));
-            System.out.println("Stock: " + metaData.get("2. Symbol"));
+        //all data requests are called by AVRequests
+        AVRequest request = new AVRequest();
 
-            List<StockInfo> stockInfoList = response.getStockInfoList();
-            stockInfoList.forEach(stock -> {
-                System.out.println("date: " + stock.getLocalDateTime());
-                System.out.println("open: " + stock.getOpen());
-                System.out.println("high: " + stock.getHigh());
-                System.out.println("low: " + stock.getLow());
-                System.out.println("close: " + stock.getClose());
-                System.out.println("volume: " + stock.getVolume());
-            });
-        } catch (AlphaVantageException e) {
-            System.out.println("failed to print stock data");
-        }
+        //sample request to pull test stock
+        //request.testRequest(stockData);
+
+        //pull tech sector
+        request.techSectorRequest(stockData);
     }
 }
