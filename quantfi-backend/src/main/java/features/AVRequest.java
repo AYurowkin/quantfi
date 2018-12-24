@@ -57,7 +57,8 @@ class AVRequest {
             int count = 0;
             for (String stock : techSectorList) {
                 //requests latest 100 data points of daily information of each tech sector stock
-                stockData.daily(stock);
+                stockData.daily(stock, OutputSize.FULL);
+                //TODO: trim the json output based on date
                 count++;
                 if (count == 4) {
                     count = 0;
