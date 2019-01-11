@@ -5,6 +5,10 @@ apply plugin: 'java'
 
 sourceCompatibility = 1.8
 
+sourceSets {
+    main.java.srcDirs = ['quantfi-backend/src/main/java']
+}
+
 repositories {
     mavenCentral()
 }
