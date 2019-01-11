@@ -2,8 +2,14 @@ group 'com.honorsthesis.quantfi'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: 'idea'
 
 sourceCompatibility = 1.8
+
+sourceSets {
+    main.java.srcDirs = ['quantfi-backend/src/main/java']
+
+}
 
 repositories {
     mavenCentral()
