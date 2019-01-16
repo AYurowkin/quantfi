@@ -27,7 +27,7 @@ class AVRequest {
             List<StockInfo> stock_info_list = response.getStockInfoList();
             //convert stock_info_list into a csv file
             Conversion conversion = new Conversion();
-            conversion.techDailyConversion(stock_info_list, stock_symbol);
+            conversion.dailyConversion(stock_info_list, stock_symbol);
         } catch (AlphaVantageException e) {
             throw new AlphaVantageException("failed to print stock data", e);
         }

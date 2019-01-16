@@ -10,7 +10,7 @@ import java.util.List;
 public class Conversion {
 
     //converts JSON files from tech_daily_last_100 into csv format
-    public void techDailyConversion(List<StockInfo> stock_info_list, String stock_symbol) {
+    public void dailyConversion(List<StockInfo> stock_info_list, String stock_symbol) {
         //create new csv file for tech daily stock
         File file = new File("quantfi-backend/data-storage/daily_csv/" + stock_symbol + "_Daily.csv");
         try {
