@@ -21,8 +21,8 @@ public class Conversion {
             writer.writeNext(header);
             stock_info_list.forEach(stock -> {
                 //generate new line for each day and populate with appropriate values
-
-                String[] data = {stock.getLocalDateTime().toString(), String.valueOf(stock.getOpen()),
+                //TODO: need to remove timestamp from LocalDateTime. Example: 2019-01-15T00:00
+                String[] data = {stock.getLocalDateTime().toLocalDate().toString(), String.valueOf(stock.getOpen()),
                         String.valueOf(stock.getHigh()), String.valueOf(stock.getLow()),
                         String.valueOf(stock.getClose()), String.valueOf(stock.getVolume())};
                 writer.writeNext(data);
