@@ -18,22 +18,16 @@ import java.util.concurrent.TimeUnit;
 // class to create requests to Alpha Vantage API
 class AVRequest {
 
-    void testRequest(StockData stockData) {
+    void testRequest(StockData stock_data) {
         try {
-            IntraDay response = stockData.intraDay("WUBA", Interval.ONE_MIN, OutputSize.COMPACT);
-            Map<String, String> metaData = response.getMetaData();
-            System.out.println("Information: " + metaData.get("1. Information"));
-            System.out.println("Stock: " + metaData.get("2. Symbol"));
+            Daily response = stock_data.daily("MSFT", OutputSize.FULL);
+            Map<String, String> meta_data = response.getMetaData();
+            String stock_symbol = meta_data.get("2. Symbol");
 
-            List<StockInfo> stockInfoList = response.getStockInfoList();
-            stockInfoList.forEach(stock -> {
-                System.out.println("date: " + stock.getLocalDateTime());
-                System.out.println("open: " + stock.getOpen());
-                System.out.println("high: " + stock.getHigh());
-                System.out.println("low: " + stock.getLow());
-                System.out.println("close: " + stock.getClose());
-                System.out.println("volume: " + stock.getVolume());
-            });
+            List<StockInfo> stock_info_list = response.getStockInfoList();
+            //convert stock_info_list into a csv file
+            Conversion conversion = new Conversion();
+            conversion.techDailyConversion(stock_info_list, stock_symbol);
         } catch (AlphaVantageException e) {
             throw new AlphaVantageException("failed to print stock data", e);
         }
