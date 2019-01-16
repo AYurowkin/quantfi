@@ -52,13 +52,11 @@ class AVRequest {
             for (String stock : techSectorList) {
                 //requests latest 100 data points of daily information of each tech sector stock
                 stockData.daily(stock, OutputSize.FULL);
-                //TODO: trim the json output based on date
                 count++;
                 if (count == 4) {
                     count = 0;
                     TimeUnit.MINUTES.sleep(1);
                 }
-                //TODO: figure out how to pay for the Alpha Vantage premium version
             }
         } catch (Exception e) {
             throw new AlphaVantageException("failed to retrieve tech sector stocks", e);

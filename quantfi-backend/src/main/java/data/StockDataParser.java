@@ -33,7 +33,7 @@ public abstract class StockDataParser<Data> extends JsonParser<Data> {
         try {
             timeSeries = timeSeries.split(" ", 2)[0];
             //creates a new text file labeled with the stock name and timeseries request
-            FileWriter fw = new FileWriter("quantfi-backend/data-storage/" + stock + "_" + timeSeries + ".txt");
+            FileWriter fw = new FileWriter("quantfi-backend/data-storage/daily_txt/" + stock + "_" + timeSeries + ".txt");
             fw.write(jsonObject.toString());
             fw.close();
         } catch (Exception e) {
