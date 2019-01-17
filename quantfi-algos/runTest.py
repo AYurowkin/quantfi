@@ -1,5 +1,9 @@
 from graphDataFrame import graph_dataframe
+from pathlib import Path
+
 
 #%%
-plt = graph_dataframe('data.txt')
+# generate path for specific file, need to modularize this later
+path = Path(__file__).parent / '../quantfi-backend/data-storage/daily_txt/MSFT_Daily.txt'
+plt = graph_dataframe(path)
 plt.show()
