@@ -25,9 +25,10 @@ class AVRequest {
             String stock_symbol = meta_data.get("2. Symbol");
 
             List<StockInfo> stock_info_list = response.getStockInfoList();
-            //convert stock_info_list into a csv file
+            //convert stock_info_list into a csv file (both full and trimmed)
             Conversion conversion = new Conversion();
             conversion.dailyConversion(stock_info_list, stock_symbol);
+            conversion.dailyConversionTrim(stock_info_list, stock_symbol);
         } catch (AlphaVantageException e) {
             throw new AlphaVantageException("failed to print stock data", e);
         }

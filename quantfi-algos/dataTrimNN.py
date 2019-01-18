@@ -1,7 +1,7 @@
 import pandas as pd
 from pathlib import Path
 
-# might convert this to Java as a method in the conversion class since we want to handle all data in the backend
+# should delete this file at some point because this is handle in dailyConversionTrim in Conversion.java
 path = Path(__file__).parent / '../quantfi-backend/data-storage/daily_csv/MSFT_Daily.csv'
 stock_df = pd.read_csv(path)
 
