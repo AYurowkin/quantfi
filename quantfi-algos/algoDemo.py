@@ -3,7 +3,7 @@ from pathlib import Path
 import math
 
 
-path = Path(__file__).parent / '../quantfi-backend/data-storage/daily_csv/MSFT_Daily.csv'
+path = Path(__file__).parent / '../quantfi-backend/data-storage/daily_csv_trim/MSFT_Daily.csv'
 stock_df = pd.read_csv(path)
 n = stock_df.shape[0]   # number of rows in stock list
 
@@ -24,3 +24,4 @@ std_dev = std_dev / n
 std_dev = math.sqrt(std_dev)
 print(mean)
 print(std_dev)
+print(stock_df)
