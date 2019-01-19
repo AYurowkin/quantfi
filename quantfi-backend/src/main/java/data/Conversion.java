@@ -42,7 +42,7 @@ public class Conversion {
             writer.writeNext(header);
             stock_info_list.forEach(stock -> {
                 //only proceed to generate new line if date is after year 2012 and before 2018 (inclusive)
-                if (stock.getLocalDateTime().getYear() >= 2012 && stock.getLocalDateTime().getYear() <= 2018) {
+                if (stock.getLocalDateTime().getYear() >= 2012 && stock.getLocalDateTime().getYear() <= 2017) {
                     //generate new line for each day and populate with appropriate values
                     String[] data = {stock.getLocalDateTime().toLocalDate().toString(), String.valueOf(stock.getOpen()),
                             String.valueOf(stock.getHigh()), String.valueOf(stock.getLow()),
