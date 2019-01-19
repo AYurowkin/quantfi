@@ -3,10 +3,9 @@ from pathlib import Path
 import math
 import matplotlib.pyplot as plt
 
-
 path = Path(__file__).parent / '../quantfi-backend/data-storage/daily_csv_trim/MSFT_Daily.csv'
 stock_df = pd.read_csv(path)
-n = stock_df.shape[0]   # number of rows in stock list
+n = stock_df.shape[0]  # number of rows in stock list
 
 # calculate mean and standard deviation of the closed price
 mean = 0.0
@@ -26,18 +25,17 @@ std_dev = math.sqrt(std_dev)
 print(mean)
 print(std_dev)
 
-# loop through the days of the year 2017 and calculate moving average
-# index of first day of 2017
+# loop through the days of the year 2017 and calculate moving averages
 first_day = stock_df.Date.str.startswith('2016').idxmax() - 1
-# averages
 thirty = 30
 ninety = 90
 thirty_day_avg = []
 ninety_day_avg = []
 for i in range(first_day, 0, -1):
-    thirty_day_avg.append((sum(stock_df['Close'].iloc[i:i+thirty].values)) / thirty)
-    ninety_day_avg.append((sum(stock_df['Close'].iloc[i:i+ninety].values)) / ninety)
+    thirty_day_avg.append((sum(stock_df['Close'].iloc[i:i + thirty].values)) / thirty)
+    ninety_day_avg.append((sum(stock_df['Close'].iloc[i:i + ninety].values)) / ninety)
 
-days = list(range(0, first_day, 1))
-plt.plot(days, thirty_day_avg, 'ro')
+days = list(range(0, first_day, 1))  # 251 stock days in a calendar year (0 - 250)
+plt.plot(days, thirty_day_avg)
+plt.plot(days, ninety_day_avg)
 plt.show()
