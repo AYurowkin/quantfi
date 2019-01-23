@@ -34,7 +34,7 @@ public class Conversion {
 
     //converts JSON files from tech_daily_last_100 into a trimmed csv format (Years 2012 - 2018) for NN training
     public void dailyConversionTrim(List<StockInfo> stock_info_list, String stock_symbol) {
-        File file = new File("quantfi-backend/data-storage/daily_csv_trim/" + stock_symbol + "_Daily.csv");
+        File file = new File("quantfi-backend/data-storage/daily_csv_trim/" + stock_symbol + "_Daily_Trim.csv");
         try {
             FileWriter output_file = new FileWriter(file);
             CSVWriter writer = new CSVWriter(output_file);
