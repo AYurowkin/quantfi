@@ -51,12 +51,19 @@ class AVRequest {
             techSectorList.remove(0);   //removes column name Symbol
             int count = 0;
             for (String stock : techSectorList) {
+                //print stock name
+                System.out.println(stock);
                 //requests latest 100 data points of daily information of each tech sector stock
-                stockData.daily(stock, OutputSize.FULL);
+                Daily response = stockData.daily(stock, OutputSize.FULL);
+                //convert to csv file and store
+                List<StockInfo> stock_info_list = response.getStockInfoList();
+                Conversion conversion = new Conversion();
+                conversion.dailyConversion(stock_info_list, stock);
+                conversion.dailyConversionTrim(stock_info_list, stock);
                 count++;
                 if (count == 4) {
                     count = 0;
-                    TimeUnit.MINUTES.sleep(1);
+                    TimeUnit.MINUTES.sleep(2);
                 }
             }
         } catch (Exception e) {
