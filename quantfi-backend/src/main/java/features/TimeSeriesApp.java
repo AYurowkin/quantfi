@@ -16,9 +16,9 @@ public class TimeSeriesApp {
         AVRequest request = new AVRequest();
 
         //sample request to pull test stock
-        request.testRequest(stockData);
+        //request.testRequest(stockData);
 
         //pull tech sector
-        //request.techSectorRequest(stockData);
+        request.techSectorRequest(stockData);
     }
 }
