@@ -3,7 +3,7 @@ from pathlib import Path
 import math
 import matplotlib.pyplot as plt
 
-path = Path(__file__).parent / '../quantfi-backend/data-storage/daily_csv_trim/AAPL_Daily_Trim.csv'
+path = Path(__file__).parent / '../quantfi-backend/data-storage/daily_csv_trim/ALOT_Daily_Trim.csv'
 stock_df = pd.read_csv(path)
 n = stock_df.shape[0]  # number of rows in stock list
 
@@ -40,6 +40,8 @@ for i in range(first_day, 0, -1):
     # print(ninety_day_avg)
 
 days = list(range(0, first_day, 1))  # 251 stock days in a calendar year (0 - 250)
+print(thirty_day_avg)
+print(ninety_day_avg)
 plt.plot(days, thirty_day_avg)
 plt.plot(days, ninety_day_avg)
 plt.show()
