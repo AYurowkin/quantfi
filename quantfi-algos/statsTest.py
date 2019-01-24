@@ -2,6 +2,7 @@ import pandas as pd
 from pathlib import Path
 import math
 import matplotlib.pyplot as plt
+import numpy as np
 
 path = Path(__file__).parent / '../quantfi-backend/data-storage/daily_csv_trim/ALOT_Daily_Trim.csv'
 stock_df = pd.read_csv(path)
@@ -40,8 +41,22 @@ for i in range(first_day, 0, -1):
     # print(ninety_day_avg)
 
 days = list(range(0, first_day, 1))  # 251 stock days in a calendar year (0 - 250)
-print(thirty_day_avg)
-print(ninety_day_avg)
-plt.plot(days, thirty_day_avg)
-plt.plot(days, ninety_day_avg)
+plt.plot(days, thirty_day_avg, label='30 MA')
+plt.plot(days, ninety_day_avg, label='90 MA')
+plt.legend(loc='upper right')
 plt.show()
+
+# truncate all decimals in both MA arrays
+thirty_day_avg_trunc = np.array(thirty_day_avg)
+ninety_day_avg_trunc = np.array(ninety_day_avg)
+num_decimals = 4
+decade = 10**num_decimals
+thirty_day_avg_trunc = np.trunc(thirty_day_avg_trunc*decade) / decade
+ninety_day_avg_trunc = np.trunc(ninety_day_avg_trunc*decade) / decade
+
+count = 0
+for i in range(len(thirty_day_avg_trunc)):
+    if thirty_day_avg_trunc[i] == ninety_day_avg_trunc[i]:
+        count += 1
+
+print(count)
