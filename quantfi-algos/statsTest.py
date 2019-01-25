@@ -40,12 +40,6 @@ for i in range(first_day, 0, -1):
     # print(thirty_day_avg)
     # print(ninety_day_avg)
 
-days = list(range(0, first_day, 1))  # 251 stock days in a calendar year (0 - 250)
-plt.plot(days, thirty_day_avg, label='30 MA')
-plt.plot(days, ninety_day_avg, label='90 MA')
-plt.legend(loc='upper right')
-plt.show()
-
 # truncate all decimals in both MA arrays
 thirty_day_avg_trunc = np.array(thirty_day_avg)
 ninety_day_avg_trunc = np.array(ninety_day_avg)
@@ -54,9 +48,22 @@ decade = 10**num_decimals
 thirty_day_avg_trunc = np.trunc(thirty_day_avg_trunc*decade) / decade
 ninety_day_avg_trunc = np.trunc(ninety_day_avg_trunc*decade) / decade
 
-count = 0
-for i in range(len(thirty_day_avg_trunc)):
-    if thirty_day_avg_trunc[i] == ninety_day_avg_trunc[i]:
-        count += 1
+# calculate intersection between 30 and 90 day MA
+diff = []
+for i in range(first_day - 1):
+    x1 = [i, i+1]
+    y1 = [thirty_day_avg_trunc[i], thirty_day_avg_trunc[i+1]]
+    c1 = np.polyfit(x1, y1, 1)
+    x2 = [i, i+1]
+    y2 = [ninety_day_avg_trunc[i], thirty_day_avg_trunc[i+1]]
+    c2 = np.polyfit(x2, y2, 1)
+    # c[0] is m and c[1] is b in y = mx + b, y - mx = b
 
-print(count)
+
+# plot MA
+days = list(range(0, first_day, 1))  # 251 stock days in a calendar year (0 - 250)
+plt.plot(days, thirty_day_avg_trunc, label='30 MA')
+plt.plot(days, ninety_day_avg_trunc, label='90 MA')
+plt.legend(loc='upper right')
+
+plt.show()
