@@ -58,8 +58,21 @@ for i in range(first_day - 1):
     y2_thirty = thirty_day_avg_trunc[i+1]
     m_thirty = (y1_thirty - y2_thirty) / (x1_thirty - x2_thirty)
     b_thirty = ((x1_thirty * y1_thirty) - (x2_thirty * y1_thirty)) / (x1_thirty - x2_thirty)
+    x1_ninety = i
+    x2_ninety = i + 1
+    y1_ninety = ninety_day_avg_trunc[i]
+    y2_ninety = ninety_day_avg_trunc[i+1]
+    m_ninety = (y1_ninety - y2_ninety) / (x1_ninety - x2_ninety)
+    b_ninety = ((x1_ninety * y1_ninety) - (x2_ninety * y2_ninety) / (x1_ninety - x2_ninety))
     # y = m_thirty*x + b_thirty
     # put in form x + y = b
+    m_thirty = 0 - m_thirty
+    m_ninety = 0 - m_ninety
+    a = np.array([[m_thirty, m_ninety], [1, 1]])
+    b = np.array([b_thirty, b_ninety])
+    intersection = np.linalg.solve(a, b)
+    # need to figure out how to plot the intersections
+
 
 # plot MA
 days = list(range(0, first_day, 1))  # 251 stock days in a calendar year (0 - 250)
