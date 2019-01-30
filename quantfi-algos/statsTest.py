@@ -51,14 +51,15 @@ ninety_day_avg_trunc = np.trunc(ninety_day_avg_trunc*decade) / decade
 # calculate intersection between 30 and 90 day MA
 diff = []
 for i in range(first_day - 1):
-    x1 = [i, i+1]
-    y1 = [thirty_day_avg_trunc[i], thirty_day_avg_trunc[i+1]]
-    c1 = np.polyfit(x1, y1, 1)
-    x2 = [i, i+1]
-    y2 = [ninety_day_avg_trunc[i], thirty_day_avg_trunc[i+1]]
-    c2 = np.polyfit(x2, y2, 1)
-    # c[0] is m and c[1] is b in y = mx + b, y - mx = b
-
+    # create a linear equation for both 30 and 90 day MA
+    x1_thirty = i
+    x2_thirty = i + 1
+    y1_thirty = thirty_day_avg_trunc[i]
+    y2_thirty = thirty_day_avg_trunc[i+1]
+    m_thirty = (y1_thirty - y2_thirty) / (x1_thirty - x2_thirty)
+    b_thirty = ((x1_thirty * y1_thirty) - (x2_thirty * y1_thirty)) / (x1_thirty - x2_thirty)
+    # y = m_thirty*x + b_thirty
+    # put in form x + y = b
 
 # plot MA
 days = list(range(0, first_day, 1))  # 251 stock days in a calendar year (0 - 250)
