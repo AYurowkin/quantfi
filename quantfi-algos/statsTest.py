@@ -50,10 +50,10 @@ ninety_day_avg_trunc = np.trunc(ninety_day_avg_trunc*decade) / decade
 
 # calculate intersection between 30 and 90 day MA
 diff = []
-for i in range(first_day - 1):
+while i < first_day - 1:
     # create a linear equation for both 30 and 90 day MA
     x1_thirty = i
-    x2_thirty = i + 1
+    x2_thirty = i + 4
     y1_thirty = thirty_day_avg_trunc[i]
     y2_thirty = thirty_day_avg_trunc[i+1]
     m_thirty = (y1_thirty - y2_thirty) / (x1_thirty - x2_thirty)
@@ -72,6 +72,11 @@ for i in range(first_day - 1):
     b = np.array([b_thirty, b_ninety])
     intersection = np.linalg.solve(a, b)
     # need to figure out how to plot the intersections
+    np.append(diff, intersection)
+    print(intersection)
+    i += 5
+
+# create a 2d array from days and ma arrays for 30 days and 90 days
 
 
 # plot MA
@@ -79,5 +84,10 @@ days = list(range(0, first_day, 1))  # 251 stock days in a calendar year (0 - 25
 plt.plot(days, thirty_day_avg_trunc, label='30 MA')
 plt.plot(days, ninety_day_avg_trunc, label='90 MA')
 plt.legend(loc='upper right')
+
+# plot intersection
+x_val = [x[0] for x in diff]
+y_val = [x[1] for x in diff]
+plt.plot(x_val, y_val, color='red')
 
 plt.show()
