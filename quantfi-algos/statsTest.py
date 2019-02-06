@@ -3,6 +3,7 @@ from pathlib import Path
 import math
 import matplotlib.pyplot as plt
 import numpy as np
+import itertools
 
 path = Path(__file__).parent / '../quantfi-backend/data-storage/daily_csv_trim/ALOT_Daily_Trim.csv'
 stock_df = pd.read_csv(path)
@@ -40,54 +41,37 @@ for i in range(first_day, 0, -1):
     # print(thirty_day_avg)
     # print(ninety_day_avg)
 
-# truncate all decimals in both MA arrays
+# truncate to four decimals in both MA arrays
 thirty_day_avg_trunc = np.array(thirty_day_avg)
 ninety_day_avg_trunc = np.array(ninety_day_avg)
-num_decimals = 4
+num_decimals = 10
+# TODO: need to update this number and figure out the right tolerance in order to improve intersection accuracy
 decade = 10**num_decimals
 thirty_day_avg_trunc = np.trunc(thirty_day_avg_trunc*decade) / decade
 ninety_day_avg_trunc = np.trunc(ninety_day_avg_trunc*decade) / decade
 
-# calculate intersection between 30 and 90 day MA
-diff = []
-while i < first_day - 1:
-    # create a linear equation for both 30 and 90 day MA
-    x1_thirty = i
-    x2_thirty = i + 4
-    y1_thirty = thirty_day_avg_trunc[i]
-    y2_thirty = thirty_day_avg_trunc[i+1]
-    m_thirty = (y1_thirty - y2_thirty) / (x1_thirty - x2_thirty)
-    b_thirty = ((x1_thirty * y1_thirty) - (x2_thirty * y1_thirty)) / (x1_thirty - x2_thirty)
-    x1_ninety = i
-    x2_ninety = i + 1
-    y1_ninety = ninety_day_avg_trunc[i]
-    y2_ninety = ninety_day_avg_trunc[i+1]
-    m_ninety = (y1_ninety - y2_ninety) / (x1_ninety - x2_ninety)
-    b_ninety = ((x1_ninety * y1_ninety) - (x2_ninety * y2_ninety) / (x1_ninety - x2_ninety))
-    # y = m_thirty*x + b_thirty
-    # put in form x + y = b
-    m_thirty = 0 - m_thirty
-    m_ninety = 0 - m_ninety
-    a = np.array([[m_thirty, m_ninety], [1, 1]])
-    b = np.array([b_thirty, b_ninety])
-    intersection = np.linalg.solve(a, b)
-    # need to figure out how to plot the intersections
-    np.append(diff, intersection)
-    print(intersection)
-    i += 5
+# create two 2d arrays from days and ma arrays for 30 days and 90 days
+days = np.array(list(range(0, first_day, 1)))  # 251 stock days in a calendar year (0 - 250)
+inter_30 = np.column_stack((days, thirty_day_avg_trunc))
+inter_90 = np.column_stack((days, ninety_day_avg_trunc))
+intersection = np.empty((0, 2))
 
-# create a 2d array from days and ma arrays for 30 days and 90 days
+# loop through the 2d arrays and find the x y pairs of intersection
+for i, j in itertools.product(np.arange(inter_30.shape[0]), np.arange(inter_90.shape[0])):
+    if np.all(np.isclose(inter_30[i], inter_90[j], atol=2e-2)):
+        intersection = np.concatenate((intersection, [inter_90[j]]), axis=0)
+print("LIST OF INTERSECTIONS")
+print(intersection)
 
 
 # plot MA
-days = list(range(0, first_day, 1))  # 251 stock days in a calendar year (0 - 250)
 plt.plot(days, thirty_day_avg_trunc, label='30 MA')
 plt.plot(days, ninety_day_avg_trunc, label='90 MA')
 plt.legend(loc='upper right')
 
 # plot intersection
-x_val = [x[0] for x in diff]
-y_val = [x[1] for x in diff]
-plt.plot(x_val, y_val, color='red')
+x_val = [x[0] for x in intersection]
+y_val = [x[1] for x in intersection]
+plt.scatter(x_val, y_val, color='red')
 
 plt.show()
