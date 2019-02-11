@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import itertools
 
-path = Path(__file__).parent / '../quantfi-backend/data-storage/daily_csv_trim/ALOT_Daily_Trim.csv'
+path = Path(__file__).parent / '../quantfi-backend/data-storage/daily_csv_trim/AMCN_Daily_Trim.csv'
 stock_df = pd.read_csv(path)
 n = stock_df.shape[0]  # number of rows in stock list
 
@@ -44,8 +44,8 @@ for i in range(first_day, 0, -1):
 # truncate to four decimals in both MA arrays
 thirty_day_avg_trunc = np.array(thirty_day_avg)
 ninety_day_avg_trunc = np.array(ninety_day_avg)
-num_decimals = 10
-# TODO: need to update this number and figure out the right tolerance in order to improve intersection accuracy
+num_decimals = 4
+# TODO: need to figure out how many decimals for average price, right now it's truncating to 4 decimal places
 decade = 10**num_decimals
 thirty_day_avg_trunc = np.trunc(thirty_day_avg_trunc*decade) / decade
 ninety_day_avg_trunc = np.trunc(ninety_day_avg_trunc*decade) / decade
@@ -57,11 +57,13 @@ inter_90 = np.column_stack((days, ninety_day_avg_trunc))
 intersection = np.empty((0, 2))
 
 # loop through the 2d arrays and find the x y pairs of intersection
+# TODO: need to figure out the appropriate tolerance, right now it's 3*(10)^-2
 for i, j in itertools.product(np.arange(inter_30.shape[0]), np.arange(inter_90.shape[0])):
-    if np.all(np.isclose(inter_30[i], inter_90[j], atol=2e-2)):
+    if np.all(np.isclose(inter_30[i], inter_90[j], atol=3e-2)):
         intersection = np.concatenate((intersection, [inter_90[j]]), axis=0)
 print("LIST OF INTERSECTIONS")
 print(intersection)
+# TODO: figure out how to solve the overestimation of intersections
 
 
 # plot MA
