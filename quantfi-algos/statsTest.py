@@ -61,8 +61,9 @@ intersection = np.empty((0, 2))
 for i, j in itertools.product(np.arange(inter_30.shape[0]), np.arange(inter_90.shape[0])):
     if np.all(np.isclose(inter_30[i], inter_90[j], atol=3e-2)):
         intersection = np.concatenate((intersection, [inter_90[j]]), axis=0)
-print("LIST OF INTERSECTIONS")
-print(intersection)
+        print(inter_30[j])
+        print(inter_90[j])
+        print()
 # TODO: figure out how to solve the overestimation of intersections
 
 
