@@ -80,7 +80,7 @@ plt.legend(loc='upper right')
 
 # plot intersection
 x_val = [x[0] for x in intersection]
-y_val = [x[1] for x in intersection]
+y_val = [y[1] for y in intersection]
 plt.scatter(x_val, y_val, color='red')
 
 plt.show()
