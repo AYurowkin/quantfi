@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import itertools
 
-path = Path(__file__).parent / '../quantfi-backend/data-storage/daily_csv_trim/AMCN_Daily_Trim.csv'
+path = Path(__file__).parent / '../quantfi-backend/data-storage/daily_csv_trim/ASGN_Daily_Trim.csv'
 stock_df = pd.read_csv(path)
 n = stock_df.shape[0]  # number of rows in stock list
 
@@ -61,10 +61,10 @@ intersection = np.empty((0, 2))
 for i, j in itertools.product(np.arange(inter_30.shape[0]), np.arange(inter_90.shape[0])):
     if np.all(np.isclose(inter_30[i], inter_90[j], atol=3e-2)):
         intersection = np.concatenate((intersection, [inter_90[j]]), axis=0)
-        print(inter_30[j])
-        print(inter_90[j])
-        print()
 # TODO: figure out how to solve the overestimation of intersections
+print(stock_df)
+print("INTERSECTION DATA")
+print(intersection)
 
 
 # plot MA
