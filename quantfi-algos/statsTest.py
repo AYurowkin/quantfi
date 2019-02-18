@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-path = Path(__file__).parent / '../quantfi-backend/data-storage/daily_csv_trim/AMKR_Daily_Trim.csv'
+path = Path(__file__).parent / '../quantfi-backend/data-storage/daily_csv_trim/AMCN_Daily_Trim.csv'
 stock_df = pd.read_csv(path)
 n = stock_df.shape[0]  # number of rows in stock list
 
@@ -31,10 +31,8 @@ days = np.array(list(range(0, first_day, 1)))  # 251 stock days in a calendar ye
 inter_30 = np.column_stack((days, thirty_day_avg_trunc))
 inter_90 = np.column_stack((days, ninety_day_avg_trunc))
 
-# TODO: figure out the underestimation of intersections between the two MA
 # find intersection with system of equations
 intersection = []
-step = 1
 for row in (days - 1):
     # get x, y pairs of the current day
     curr_x_30 = inter_30[row][0]
@@ -42,10 +40,10 @@ for row in (days - 1):
     curr_x_90 = inter_90[row][0]
     curr_y_90 = inter_90[row][1]
     # get x, y pairs of the next day
-    next_x_30 = inter_30[row+step][0]
-    next_y_30 = inter_30[row+step][1]
-    next_x_90 = inter_90[row+step][0]
-    next_y_90 = inter_90[row+step][1]
+    next_x_30 = inter_30[row+1][0]
+    next_y_30 = inter_30[row+1][1]
+    next_x_90 = inter_90[row+1][0]
+    next_y_90 = inter_90[row+1][1]
 
     # create point tuples
     curr_points_30 = [curr_x_30, curr_y_30]
@@ -71,6 +69,7 @@ for row in (days - 1):
     if d != 0:
         x = dx / d
         y = dy / d
+        # make sure intersection is within the bounds
         if curr_x_30 <= x <= next_x_30:
             intersection.append([x, y])
 
