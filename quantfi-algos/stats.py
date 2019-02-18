@@ -88,6 +88,10 @@ for file in os.listdir(directory):
         plt.plot(days, thirty_day_avg_trunc, label='30 MA')
         plt.plot(days, ninety_day_avg_trunc, label='90 MA')
         plt.legend(loc='upper right')
+        # get name of stock
+        plt.title(s=filename.split("_", 1)[0], color='green')
+        plt.xlabel(s='Day', color='green')
+        plt.ylabel(s='Price', color='green')
 
         # plot intersection
         x_val = [x[0] for x in intersection]
