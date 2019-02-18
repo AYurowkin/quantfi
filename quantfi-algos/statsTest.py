@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+# test file to test operations on a single stock
+# change stock name in path to use a different stock
 path = Path(__file__).parent / '../quantfi-backend/data-storage/daily_csv_trim/AMCN_Daily_Trim.csv'
 stock_df = pd.read_csv(path)
 n = stock_df.shape[0]  # number of rows in stock list
@@ -21,7 +23,7 @@ for i in range(first_day, 0, -1):
 # truncate to four decimals in both MA arrays
 thirty_day_avg_trunc = np.array(thirty_day_avg)
 ninety_day_avg_trunc = np.array(ninety_day_avg)
-num_decimals = 4
+num_decimals = 10
 decade = 10**num_decimals
 thirty_day_avg_trunc = np.trunc(thirty_day_avg_trunc*decade) / decade
 ninety_day_avg_trunc = np.trunc(ninety_day_avg_trunc*decade) / decade
