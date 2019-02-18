@@ -1,35 +1,14 @@
-import pandas as pd
 from pathlib import Path
-import math
 import matplotlib.pyplot as plt
 import numpy as np
-import itertools
+import pandas as pd
 
-path = Path(__file__).parent / '../quantfi-backend/data-storage/daily_csv_trim/ASGN_Daily_Trim.csv'
+path = Path(__file__).parent / '../quantfi-backend/data-storage/daily_csv_trim/AMKR_Daily_Trim.csv'
 stock_df = pd.read_csv(path)
 n = stock_df.shape[0]  # number of rows in stock list
 
-# calculate mean and standard deviation of the closed price
-mean = 0.0
-for index, row in stock_df.iterrows():
-    curr_close = row['Close']
-    mean = mean + curr_close
-
-mean = mean / n
-# print(mean)
-
-std_dev = 0.0
-for index, row in stock_df.iterrows():
-    curr_close = row['Close']
-    std_dev = std_dev + math.pow((curr_close - mean), 2)
-
-std_dev = std_dev / n
-std_dev = math.sqrt(std_dev)
-# print(std_dev)
-
 # loop through the days of the year 2017 and calculate moving averages
 first_day = stock_df.Date.str.startswith('2016').idxmax() - 1
-# print(stock_df.Date)
 
 thirty = 30
 ninety = 90
@@ -38,14 +17,11 @@ ninety_day_avg = []
 for i in range(first_day, 0, -1):
     thirty_day_avg.append((sum(stock_df['Close'].iloc[i:i + thirty].values)) / thirty)
     ninety_day_avg.append((sum(stock_df['Close'].iloc[i:i + ninety].values)) / ninety)
-    # print(thirty_day_avg)
-    # print(ninety_day_avg)
 
 # truncate to four decimals in both MA arrays
 thirty_day_avg_trunc = np.array(thirty_day_avg)
 ninety_day_avg_trunc = np.array(ninety_day_avg)
 num_decimals = 4
-# TODO: need to figure out how many decimals for average price, right now it's truncating to 4 decimal places
 decade = 10**num_decimals
 thirty_day_avg_trunc = np.trunc(thirty_day_avg_trunc*decade) / decade
 ninety_day_avg_trunc = np.trunc(ninety_day_avg_trunc*decade) / decade
@@ -54,18 +30,49 @@ ninety_day_avg_trunc = np.trunc(ninety_day_avg_trunc*decade) / decade
 days = np.array(list(range(0, first_day, 1)))  # 251 stock days in a calendar year (0 - 250)
 inter_30 = np.column_stack((days, thirty_day_avg_trunc))
 inter_90 = np.column_stack((days, ninety_day_avg_trunc))
-intersection = np.empty((0, 2))
 
-# loop through the 2d arrays and find the x y pairs of intersection
-# TODO: need to figure out the appropriate tolerance, right now it's 3*(10)^-2
-for i, j in itertools.product(np.arange(inter_30.shape[0]), np.arange(inter_90.shape[0])):
-    if np.all(np.isclose(inter_30[i], inter_90[j], atol=3e-2)):
-        intersection = np.concatenate((intersection, [inter_90[j]]), axis=0)
-# TODO: figure out how to solve the overestimation of intersections
-print(stock_df)
-print("INTERSECTION DATA")
-print(intersection)
+# TODO: figure out the underestimation of intersections between the two MA
+# find intersection with system of equations
+intersection = []
+step = 1
+for row in (days - 1):
+    # get x, y pairs of the current day
+    curr_x_30 = inter_30[row][0]
+    curr_y_30 = inter_30[row][1]
+    curr_x_90 = inter_90[row][0]
+    curr_y_90 = inter_90[row][1]
+    # get x, y pairs of the next day
+    next_x_30 = inter_30[row+step][0]
+    next_y_30 = inter_30[row+step][1]
+    next_x_90 = inter_90[row+step][0]
+    next_y_90 = inter_90[row+step][1]
 
+    # create point tuples
+    curr_points_30 = [curr_x_30, curr_y_30]
+    next_points_30 = [next_x_30, next_y_30]
+    curr_points_90 = [curr_x_90, curr_y_90]
+    next_points_90 = [next_x_90, next_y_90]
+
+    # create the lines
+    a_30 = curr_points_30[1] - next_points_30[1]
+    b_30 = next_points_30[0] - curr_points_30[0]
+    c_30 = curr_points_30[0] * next_points_30[1] - next_points_30[0] * curr_points_30[1]
+    a_90 = curr_points_90[1] - next_points_90[1]
+    b_90 = next_points_90[0] - curr_points_90[0]
+    c_90 = curr_points_90[0] * next_points_90[1] - next_points_90[0] * curr_points_90[1]
+
+    l1 = a_30, b_30, -c_30
+    l2 = a_90, b_90, -c_90
+
+    # find intersections
+    d = l1[0] * l2[1] - l1[1] * l2[0]
+    dx = l1[2] * l2[1] - l1[1] * l2[2]
+    dy = l1[0] * l2[2] - l1[2] * l2[0]
+    if d != 0:
+        x = dx / d
+        y = dy / d
+        if curr_x_30 <= x <= next_x_30:
+            intersection.append([x, y])
 
 # plot MA
 plt.plot(days, thirty_day_avg_trunc, label='30 MA')
