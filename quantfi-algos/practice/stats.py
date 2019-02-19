@@ -5,14 +5,14 @@ import numpy as np
 import pandas as pd
 
 # modularize csv trim such that you can plot all moving averages for all the stocks
-path = '../quantfi-backend/data-storage/daily_csv_trim/'
+path = '../../quantfi-backend/data-storage/daily_csv_trim/'
 directory = os.fsencode(path)
 
 # loop through directory to get each stock CSV
 for file in os.listdir(directory):
     filename = os.fsdecode(file)
     if filename.endswith(".csv"):
-        curr_file_path = '../quantfi-backend/data-storage/daily_csv_trim/' + filename
+        curr_file_path = '../../quantfi-backend/data-storage/daily_csv_trim/' + filename
         stock_path = Path(__file__).parent / curr_file_path
         # store csv data
         stock_df = pd.read_csv(stock_path)

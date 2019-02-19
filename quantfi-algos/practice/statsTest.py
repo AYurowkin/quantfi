@@ -5,7 +5,7 @@ import pandas as pd
 
 # test file to test operations on a single stock
 # change stock name in path to use a different stock
-path = Path(__file__).parent / '../quantfi-backend/data-storage/daily_csv_trim/AMCN_Daily_Trim.csv'
+path = Path(__file__).parent / '../../quantfi-backend/data-storage/daily_csv_trim/AMCN_Daily_Trim.csv'
 stock_df = pd.read_csv(path)
 n = stock_df.shape[0]  # number of rows in stock list
 
