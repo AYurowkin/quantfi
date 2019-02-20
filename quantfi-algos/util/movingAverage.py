@@ -16,9 +16,40 @@ class MovingAverage:
         self.day_one = d1
         self.day_two = d2
 
-    # plot the moving average of a given stock
+    def get_one_ma(self, stock_name):
+        stock_path = '../../quantfi-backend/data-storage/daily_csv_trim/' + stock_name + '_Daily_Trim.csv'
+        path = Path(__file__).parent / stock_path
+        stock_df = pd.read_csv(path)
 
-    def get_ma_one_stock(self, stock_name):
+        n = stock_df.shape[0]  # number of rows in stock list
+        if n < 252:
+            print('Stock data insufficient')
+        else:
+            # loop through the days of the year 2017 and calculate moving averages
+            first_day = stock_df.Date.str.startswith('2016').idxmax() - 1
+            day = self.day_one
+            day_avg = []
+            for i in range(first_day, 0, -1):
+                day_avg.append((sum(stock_df['Close'].iloc[i:i + day].values)) / day)
+
+            # truncate to four decimals in both MA arrays
+            day_avg_trunc = np.array(day_avg)
+            num_decimals = 10
+            decade = 10 ** num_decimals
+            day_avg_trunc = np.trunc(day_avg_trunc * decade) / decade
+
+            # plot MA
+            days = np.array(list(range(0, first_day, 1)))  # 251 stock days in a calendar year (0 - 250)
+            plt.plot(days, day_avg_trunc, label=str(day) + ' MA')
+            plt.legend(loc='upper right')
+            # get name of stock
+            plt.title(s=stock_name, color='green')
+            plt.xlabel(s='Day', color='green')
+            plt.ylabel(s='Price', color='green')
+
+            plt.show()
+
+    def get_one_ma_intersection(self, stock_name):
         stock_path = '../../quantfi-backend/data-storage/daily_csv_trim/' + stock_name + '_Daily_Trim.csv'
         path = Path(__file__).parent / stock_path
         stock_df = pd.read_csv(path)
