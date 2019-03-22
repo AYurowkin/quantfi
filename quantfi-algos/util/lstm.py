@@ -8,6 +8,8 @@ mnist = tf.keras.datasets.mnist
 x_train = x_train/255.0
 x_test = x_test/255.0
 
+print(type(x_train))
+
 model = Sequential()
 
 model.add(LSTM(128, input_shape=(x_train.shape[1:]), activation='relu', return_sequences=True))
