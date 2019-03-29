@@ -14,10 +14,13 @@ high_prices = stock_df.loc[:, 'High'].as_matrix()
 low_prices = stock_df.loc[:, 'Low'].as_matrix()
 mid_prices = (high_prices + low_prices) / 2.00
 
-train_val = 0.8 * stock_df.shape[0]
-test_val = 0.2 * stock_df.shape[1]
+split = 0.8 * stock_df.shape[0]
 
+train_data = mid_prices[:split]
+test_data = mid_prices[split:]
 
+print(train_data.shape)
+print(test_data.shape)
 
 
 mnist = tf.keras.datasets.mnist
