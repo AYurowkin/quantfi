@@ -9,7 +9,8 @@ from keras.callbacks import CSVLogger
 from keras import optimizers
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
-
+from matplotlib import pyplot as plt
+from sklearn.metrics import mean_squared_error
 
 class LSTMModel:
 
@@ -43,7 +44,7 @@ class LSTMModel:
         output_col_index = 3
         batch_size = 20
         learning_rate = 0.0001
-        epochs = 300
+        epochs = 100
         log_path = os.path.join('../../quantfi-backend/data-storage/logs/lstm_log.log')
         log_path = Path(__file__).parent / log_path
 
@@ -77,7 +78,40 @@ class LSTMModel:
         optimizer = optimizers.RMSprop(lr=learning_rate)
         model.compile(loss='mean_squared_error', optimizer=optimizer, metrics=['accuracy'])
         csv_logger = CSVLogger(log_path, append=True)
-        model.fit(train_x, train_y, epochs=epochs, verbose=2, batch_size=batch_size, shuffle=False, validation_data=(self.drop_rows(val_x, batch_size), self.drop_rows(val_y, batch_size)), callbacks=[csv_logger])
+        lstm_prediction = model.fit(train_x, train_y, epochs=epochs, verbose=2, batch_size=batch_size, shuffle=False, validation_data=(self.drop_rows(val_x, batch_size), self.drop_rows(val_y, batch_size)), callbacks=[csv_logger])
+
+        # print out error
+        pred_y = model.predict(self.drop_rows(test_x, batch_size), batch_size=batch_size)
+        pred_y = pred_y.flatten()
+        test_y = self.drop_rows(test_y, batch_size)
+        error = mean_squared_error(test_y, pred_y)
+        print("Error is", error, pred_y.shape, test_y.shape)
+        print(pred_y[0:15])
+        print(test_y[0:15])
+        y_pred_org = (pred_y * mms.data_range_[3]) + mms.data_min_[3]
+        y_test_t_org = (test_y * mms.data_range_[3]) + mms.data_min_[
+            3]  # min_max_scaler.inverse_transform(y_test_t)
+        print(y_pred_org[0:15])
+        print(y_test_t_org[0:15])
+
+        # plot the data
+        plt.figure()
+        plt.plot(lstm_prediction.history['loss'])
+        plt.plot(lstm_prediction.history['val_loss'])
+        plt.title('LSTM Model Loss')
+        plt.ylabel('Loss')
+        plt.xlabel('Epoch')
+        plt.legend(['Train', 'Test'], loc='upper left')
+        plt.show()
+
+        plt.figure()
+        plt.plot(y_pred_org)
+        plt.plot(y_test_t_org)
+        plt.title('Prediction vs Real Stock Price')
+        plt.ylabel('Price')
+        plt.xlabel('Days')
+        plt.legend(['Prediction', 'Real'], loc='upper left')
+        plt.show()
 
     def lstm_practice(self):
         stock_path = '../../quantfi-backend/data-storage/daily_csv_trim/AAPL_Daily_Trim.csv'
