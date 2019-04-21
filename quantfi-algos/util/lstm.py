@@ -45,7 +45,7 @@ class LSTMModel:
         batch_size = 20
         learning_rate = 0.0001
         epochs = 100
-        log_path = os.path.join('../../quantfi-backend/data-storage/logs/lstm_log.log')
+        log_path = '../../quantfi-backend/data-storage/logs/lstm_log.log'
         log_path = Path(__file__).parent / log_path
 
         # split into train and test set
@@ -112,6 +112,9 @@ class LSTMModel:
         plt.xlabel('Days')
         plt.legend(['Prediction', 'Real'], loc='upper left')
         plt.show()
+        pic_path = '../../quantfi-backend/data-storage/logs/pred_vs_real.png'
+        pic_path = Path(__file__).parent / pic_path
+        plt.savefig(pic_path)
 
     def lstm_practice(self):
         stock_path = '../../quantfi-backend/data-storage/daily_csv_trim/AAPL_Daily_Trim.csv'
