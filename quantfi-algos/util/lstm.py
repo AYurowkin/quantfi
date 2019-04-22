@@ -1,6 +1,5 @@
 from pathlib import Path
 import numpy as np
-import os
 import pandas as pd
 from keras.models import Sequential
 from keras.layers import Dense, Dropout
@@ -11,6 +10,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
 from matplotlib import pyplot as plt
 from sklearn.metrics import mean_squared_error
+
 
 class LSTMModel:
 
@@ -89,8 +89,7 @@ class LSTMModel:
         print(pred_y[0:15])
         print(test_y[0:15])
         y_pred_org = (pred_y * mms.data_range_[3]) + mms.data_min_[3]
-        y_test_t_org = (test_y * mms.data_range_[3]) + mms.data_min_[
-            3]  # min_max_scaler.inverse_transform(y_test_t)
+        y_test_t_org = (test_y * mms.data_range_[3]) + mms.data_min_[3]
         print(y_pred_org[0:15])
         print(y_test_t_org[0:15])
 
