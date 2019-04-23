@@ -42,11 +42,11 @@ class LSTMModel:
 
         # global variables that will be needed
         columns = ["Open", "High", "Low", "Close", "Volume"]
-        time_step = 10
+        time_step = 20
         output_col_index = 3
-        batch_size = 20
-        learning_rate = 0.0001
-        epochs = 100
+        batch_size = 30
+        learning_rate = 0.0003
+        epochs = 300
         log_path = '../../quantfi-backend/data-storage/logs/lstm_log.log'
         log_path = Path(__file__).parent / log_path
 
@@ -71,10 +71,8 @@ class LSTMModel:
 
         # build model
         model = Sequential()
-        model.add(LSTM(200, batch_input_shape=(batch_size, time_step, train_x.shape[2]), dropout=0.0, recurrent_dropout=0.1, stateful=True, return_sequences=True, kernel_initializer='random_uniform'))
-        # model.add(Dropout(0.4))
-        model.add(LSTM(60, dropout=0.1))
-        # model.add(Dropout(0.2))
+        model.add(LSTM(100, batch_input_shape=(batch_size, time_step, train_x.shape[2]), dropout=.4, recurrent_dropout=0.0, stateful=True, return_sequences=True, kernel_initializer='random_uniform'))
+        model.add(LSTM(60, dropout=0.2))
         model.add(Dense(20, activation='relu'))
         model.add(Dense(1, activation='sigmoid'))
         optimizer = optimizers.RMSprop(lr=learning_rate)
