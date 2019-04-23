@@ -7,4 +7,4 @@ class Main:
 
     if __name__ == '__main__':
         lstm = LSTMModel()
-        lstm.run_lstm('AAPL')
+        lstm.run_lstm('AMZN')

@@ -12,26 +12,28 @@ from matplotlib import pyplot as plt
 from sklearn.metrics import mean_squared_error
 
 
+def drop_rows(df, batch_size):
+    rows = df.shape[0] % batch_size
+    if rows > 0:
+        return df[:-rows]
+    else:
+        return df
+
+
+def build_data(df, index, step):
+    dim_0 = df.shape[0] - step
+    dim_1 = df.shape[1]
+    x = np.zeros((dim_0, step, dim_1))
+    y = np.zeros((dim_0, ))
+
+    for i in range(dim_0):
+        x[i] = df[i:step + i]
+        y[i] = df[step + i, index]
+
+    return x, y
+
+
 class LSTMModel:
-
-    def build_data(self, df, index, step):
-        dim_0 = df.shape[0] - step
-        dim_1 = df.shape[1]
-        x = np.zeros((dim_0, step, dim_1))
-        y = np.zeros((dim_0, ))
-
-        for i in range(dim_0):
-            x[i] = df[i:step + i]
-            y[i] = df[step + i, index]
-
-        return x, y
-
-    def drop_rows(self, df, batch_size):
-        rows = df.shape[0] % batch_size
-        if rows > 0:
-            return df[:-rows]
-        else:
-            return df
 
     def run_lstm(self, stock_name):
         stock_path = '../../quantfi-backend/data-storage/daily_csv_trim/' + stock_name + '_Daily_Trim.csv'
@@ -42,7 +44,7 @@ class LSTMModel:
         columns = ["Open", "High", "Low", "Close", "Volume"]
         time_step = 30
         output_col_index = 3
-        batch_size = 20
+        batch_size = 30
         learning_rate = 0.0001
         epochs = 100
         log_path = '../../quantfi-backend/data-storage/logs/lstm_log.log'
@@ -59,31 +61,31 @@ class LSTMModel:
         x_test = mms.transform(stock_test.loc[:, columns])
 
         # organize data to feed to model
-        train_x, train_y = self.build_data(x_train, output_col_index, time_step)
-        train_x = self.drop_rows(train_x, batch_size)
-        train_y = self.drop_rows(train_y, batch_size)
+        train_x, train_y = build_data(x_train, output_col_index, time_step)
+        train_x = drop_rows(train_x, batch_size)
+        train_y = drop_rows(train_y, batch_size)
 
-        val_test_x, val_test_y = self.build_data(x_test, output_col_index, time_step)
-        val_x, test_x = np.split(self.drop_rows(val_test_x, batch_size), 2)
-        val_y, test_y = np.split(self.drop_rows(val_test_y, batch_size), 2)
+        val_test_x, val_test_y = build_data(x_test, output_col_index, time_step)
+        val_x, test_x = np.split(drop_rows(val_test_x, batch_size), 2)
+        val_y, test_y = np.split(drop_rows(val_test_y, batch_size), 2)
 
         # build model
         model = Sequential()
-        model.add(LSTM(100, batch_input_shape=(batch_size, time_step, train_x.shape[2]), dropout=0.0, recurrent_dropout=0.0, stateful=True, return_sequences=True, kernel_initializer='random_uniform'))
-        model.add(Dropout(0.4))
-        model.add(LSTM(60, dropout=0.0))
-        model.add(Dropout(0.4))
+        model.add(LSTM(300, batch_input_shape=(batch_size, time_step, train_x.shape[2]), dropout=0.0, recurrent_dropout=0.0, stateful=True, return_sequences=True, kernel_initializer='random_uniform'))
+        # model.add(Dropout(0.4))
+        model.add(LSTM(100, dropout=0.0))
+        # model.add(Dropout(0.2))
         model.add(Dense(20, activation='relu'))
         model.add(Dense(1, activation='sigmoid'))
         optimizer = optimizers.RMSprop(lr=learning_rate)
         model.compile(loss='mean_squared_error', optimizer=optimizer, metrics=['accuracy'])
         csv_logger = CSVLogger(log_path, append=True)
-        lstm_prediction = model.fit(train_x, train_y, epochs=epochs, verbose=2, batch_size=batch_size, shuffle=False, validation_data=(self.drop_rows(val_x, batch_size), self.drop_rows(val_y, batch_size)), callbacks=[csv_logger])
+        lstm_prediction = model.fit(train_x, train_y, epochs=epochs, verbose=2, batch_size=batch_size, shuffle=False, validation_data=(drop_rows(val_x, batch_size), drop_rows(val_y, batch_size)), callbacks=[csv_logger])
 
         # print out error
-        pred_y = model.predict(self.drop_rows(test_x, batch_size), batch_size=batch_size)
+        pred_y = model.predict(drop_rows(test_x, batch_size), batch_size=batch_size)
         pred_y = pred_y.flatten()
-        test_y = self.drop_rows(test_y, batch_size)
+        test_y = drop_rows(test_y, batch_size)
         error = mean_squared_error(test_y, pred_y)
         print("Error is", error, pred_y.shape, test_y.shape)
         print(pred_y[0:15])
@@ -106,7 +108,7 @@ class LSTMModel:
         plt.figure()
         plt.plot(y_pred_org)
         plt.plot(y_test_t_org)
-        plt.title('Prediction vs Real Stock Price')
+        plt.title('Prediction vs Real ' + stock_name + ' Stock Price')
         plt.ylabel('Price')
         plt.xlabel('Days')
         plt.legend(['Prediction', 'Real'], loc='upper left')
