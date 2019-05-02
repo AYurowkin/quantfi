@@ -5,7 +5,9 @@ import pandas as pd
 
 # test file to test operations on a single stock
 # change stock name in path to use a different stock
-path = Path(__file__).parent / '../../quantfi-backend/data-storage/daily_csv_trim/ACY_Daily_Trim.csv'
+stock_name = 'ACY'
+stock_path = '../../quantfi-backend/data-storage/daily_csv_trim/' + stock_name + '_Daily_Trim.csv'
+path = Path(__file__).parent / stock_path
 stock_df = pd.read_csv(path)
 n = stock_df.shape[0]  # number of rows in stock list
 
@@ -76,6 +78,7 @@ for row in (days - 1):
             intersection.append([x, y])
 
 # plot MA
+plt.title(stock_name + ' Mean Reversion')
 plt.plot(days, thirty_day_avg_trunc, label='30 MA')
 plt.plot(days, ninety_day_avg_trunc, label='90 MA')
 plt.legend(loc='upper right')
