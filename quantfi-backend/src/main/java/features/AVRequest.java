@@ -20,7 +20,7 @@ class AVRequest {
 
     void testRequest(StockData stock_data) {
         try {
-            Daily response = stock_data.daily("MSFT", OutputSize.FULL);
+            Daily response = stock_data.daily("INTC", OutputSize.FULL);
             Map<String, String> meta_data = response.getMetaData();
             String stock_symbol = meta_data.get("2. Symbol");
 
