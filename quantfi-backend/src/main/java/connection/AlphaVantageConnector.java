@@ -19,6 +19,7 @@ public class AlphaVantageConnector implements ApiConnector {
         this.connectionTimeOut = connectionTimeOut;
     }
 
+    // Main method to pass in URL and connect to Alpha Vantage API
     @Override
     public String getRequest(ApiParameter... apiParameters) {
         String parameters = getParameters(apiParameters);
@@ -43,6 +44,7 @@ public class AlphaVantageConnector implements ApiConnector {
         }
     }
 
+    // Add parameters to the URL
     private String getParameters(ApiParameter... apiParameters) {
         ApiParameterBuilder urlBuilder = new ApiParameterBuilder();
         for (ApiParameter apiParameter : apiParameters) {

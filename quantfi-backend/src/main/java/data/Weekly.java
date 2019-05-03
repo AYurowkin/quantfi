@@ -18,6 +18,7 @@ public class Weekly extends StockDataResponse {
         return parser.parseJson(json);
     }
 
+    // parses the stock and retrieves prices with the weekly timestamp
     public static class Parser extends StockDataParser<Weekly> {
 
         @Override

@@ -38,6 +38,7 @@ public class Conversion {
         try {
             FileWriter output_file = new FileWriter(file);
             CSVWriter writer = new CSVWriter(output_file);
+            // create the new header for the CSV file
             String[] header = {"Date", "Open", "High", "Low", "Close", "Volume"};
             writer.writeNext(header);
             stock_info_list.forEach(stock -> {

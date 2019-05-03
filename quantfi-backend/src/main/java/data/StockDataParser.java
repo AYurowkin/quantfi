@@ -15,6 +15,7 @@ public abstract class StockDataParser<Data> extends JsonParser<Data> {
 
     abstract String getStockDataKey();
 
+    // retrieve all meta data from the JSON response
     @Override
     public Data resolve(JsonObject jsonObject) {
         Type metaDataType = new TypeToken<Map<String, String>>(){}.getType();
@@ -29,6 +30,7 @@ public abstract class StockDataParser<Data> extends JsonParser<Data> {
         }
     }
 
+    // store stock data in local directory
     private void storeData(JsonObject jsonObject, String stock, String timeSeries) {
         try {
             timeSeries = timeSeries.split(" ", 2)[0];

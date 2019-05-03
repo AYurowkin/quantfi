@@ -34,6 +34,7 @@ class AVRequest {
         }
     }
 
+    // request to get all stock information from all technology companies in NASDAQ
     void techSectorRequest(StockData stockData) {
         try {
             String filepath = "quantfi-backend/data-storage/preprocessed/companylist.csv";

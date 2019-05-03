@@ -17,6 +17,7 @@ public class MonthlyAdjusted extends StockDataResponse {
         return parser.parseJson(json);
     }
 
+    // parses the stock and retrieves prices with the monthly adjusted timestamp
     private static class Parser extends StockDataParser<MonthlyAdjusted> {
 
         @Override

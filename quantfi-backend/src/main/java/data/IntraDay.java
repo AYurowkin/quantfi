@@ -18,6 +18,7 @@ public class IntraDay extends StockDataResponse {
         return parser.parseJson(json);
     }
 
+    // parses the stock and retrieves prices with the intraday timestamp
     private static class Parser extends StockDataParser<IntraDay> {
         private final Interval interval;
 

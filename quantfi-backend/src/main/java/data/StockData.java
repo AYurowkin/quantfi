@@ -7,6 +7,7 @@ import connection.ApiConnector;
 public class StockData {
     private final ApiConnector connector;
 
+    // establish connection with Alpha Vantage API
     public StockData(ApiConnector connector) {
         this.connector = connector;
     }

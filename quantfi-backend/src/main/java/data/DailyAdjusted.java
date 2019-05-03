@@ -18,6 +18,7 @@ public class DailyAdjusted extends StockDataResponse {
         return parser.parseJson(json);
     }
 
+    // parses the stock and retrieves prices with the daily adjusted timestamp
     private static class Parser extends StockDataParser<DailyAdjusted> {
 
         @Override

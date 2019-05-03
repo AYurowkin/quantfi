@@ -17,6 +17,7 @@ public class WeeklyAdjusted extends StockDataResponse {
         return null;
     }
 
+    // parses the stock and retrieves prices with the weekly adjusted timestamp
     private static class Parser extends StockDataParser<WeeklyAdjusted> {
 
         @Override
